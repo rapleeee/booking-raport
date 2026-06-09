@@ -28,8 +28,7 @@ jobs:
           cd /var/www/booking-raport
           git pull origin development
           php8.4 /usr/local/bin/composer install --no-dev --optimize-autoloader
-          rm -rf node_modules
-          NODE_ENV=development npm install
+          npm install tailwindcss @tailwindcss/vite --save-dev
           npm run build
           php8.4 artisan migrate --force
           php8.4 artisan config:cache
