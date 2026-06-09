@@ -8,6 +8,12 @@
     <title>{{ $title ?? 'Admin' }} — Sistem Booking</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+    @theme {
+        --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+    </style>
 </head>
 <body class="font-sans antialiased bg-gray-100">
 
