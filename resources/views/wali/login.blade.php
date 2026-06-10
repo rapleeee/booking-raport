@@ -3,7 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Wali Kelas</title>
+    <title>Login Wali Kelas - Booking Raport</title>
+
+    <!-- SEO & Favicon -->
+    <meta name="description" content="Sistem Antrean dan Pengambilan Raport SMK Pesat IT Xpro. Solusi cerdas penjadwalan kehadiran orang tua secara digital.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Login Wali Kelas - SMK Pesat IT Xpro">
+    <meta property="og:description" content="Sistem Antrean dan Pengambilan Raport SMK Pesat IT Xpro. Solusi cerdas penjadwalan kehadiran orang tua secara digital.">
+    <meta property="og:image" content="{{ asset('logo.png') }}">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="Login Wali Kelas - SMK Pesat IT Xpro">
+    <meta property="twitter:description" content="Sistem Antrean dan Pengambilan Raport SMK Pesat IT Xpro. Solusi cerdas penjadwalan kehadiran orang tua secara digital.">
+    <meta property="twitter:image" content="{{ asset('logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     @vite('resources/css/app.css')
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <style type="text/tailwindcss">

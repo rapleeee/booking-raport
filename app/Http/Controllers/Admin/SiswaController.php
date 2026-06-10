@@ -31,6 +31,23 @@ class SiswaController extends Controller
         return back()->with('success', 'Siswa berhasil ditambahkan.');
     }
 
+    public function edit(Siswa $siswa)
+    {
+        $kelas = Kelas::orderBy('nama')->get();
+        return view('admin.siswa.edit', compact('siswa', 'kelas'));
+    }
+
+    public function update(Request $request, Siswa $siswa)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'kelas_id' => 'required|exists:kelas,id'
+        ]);
+
+        $siswa->update($request->all());
+        return redirect()->route('admin.siswa.index')->with('success', 'Siswa berhasil diperbarui.');
+    }
+
     public function destroy(Siswa $siswa)
     {
         $siswa->delete();

@@ -3,7 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Wali Kelas</title>
+    <title>Dashboard Wali Kelas - Booking Raport</title>
+
+    <!-- SEO & Favicon -->
+    <meta name="description" content="Sistem Antrean dan Pengambilan Raport SMK Pesat IT Xpro. Solusi cerdas penjadwalan kehadiran orang tua secara digital.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Dashboard Wali Kelas - SMK Pesat IT Xpro">
+    <meta property="og:description" content="Sistem Antrean dan Pengambilan Raport SMK Pesat IT Xpro. Solusi cerdas penjadwalan kehadiran orang tua secara digital.">
+    <meta property="og:image" content="{{ asset('logo.png') }}">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="Dashboard Wali Kelas - SMK Pesat IT Xpro">
+    <meta property="twitter:description" content="Sistem Antrean dan Pengambilan Raport SMK Pesat IT Xpro. Solusi cerdas penjadwalan kehadiran orang tua secara digital.">
+    <meta property="twitter:image" content="{{ asset('logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     @vite('resources/css/app.css')
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <style type="text/tailwindcss">
@@ -34,12 +48,7 @@
 
     <main class="max-w-4xl mx-auto px-6 py-8">
         
-        @if(session('success'))
-        <div class="mb-6 bg-emerald-50 text-emerald-600 px-4 py-3 rounded-xl text-sm font-medium border border-emerald-100 flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            {{ session('success') }}
-        </div>
-        @endif
+
 
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-xl font-bold text-gray-800">Daftar Antrean (Hadir)</h2>
@@ -47,6 +56,17 @@
                 Hari ini: {{ date('d M Y') }}
             </span>
         </div>
+        
+        @php
+            $isCallingAny = $bookings->contains('status', 'dipanggil');
+        @endphp
+
+        @if($isCallingAny)
+            <div class="mb-6 bg-amber-50 border border-amber-200 text-amber-700 px-4 py-3 rounded-xl text-sm flex items-center gap-3 shadow-sm">
+                <svg class="w-5 h-5 shrink-0 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <p><strong>Ada tamu yang sedang dilayani.</strong> Anda harus menyelesaikan tamu saat ini sebelum memanggil tamu berikutnya.</p>
+            </div>
+        @endif
 
         <div class="space-y-4">
             @forelse($bookings as $booking)
@@ -77,7 +97,9 @@
                     <div class="flex items-center gap-2">
                         <form action="{{ route('wali.panggil', $booking->id) }}" method="POST">
                             @csrf
-                            <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2.5 px-6 rounded-xl transition-colors shadow-md shadow-indigo-500/20 text-sm">
+                            <button type="submit" 
+                                {{ $isCallingAny ? 'disabled' : '' }}
+                                class="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2.5 px-6 rounded-xl transition-colors shadow-md shadow-indigo-500/20 text-sm disabled:opacity-50 disabled:cursor-not-allowed">
                                 Panggil Tamu
                             </button>
                         </form>
@@ -103,6 +125,28 @@
             @endforelse
         </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: '{{ session("success") }}',
+                    confirmButtonColor: '#4f46e5',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: '{{ session("error") }}',
+                    confirmButtonColor: '#4f46e5',
+                });
+            @endif
+        </script>
     </main>
 
 </body>

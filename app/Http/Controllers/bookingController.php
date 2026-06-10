@@ -78,14 +78,19 @@ class bookingController extends Controller
             return date('H:i:s', strtotime($time));
         }, $bookedSlots);
 
-        // $allSlots are stored as 'H:i:s' usually but let's format it safely
         $formattedAllSlots = array_map(function($time) {
             return date('H:i:s', strtotime($time));
         }, $allSlots);
 
-        $availableSlots = array_values(array_diff($formattedAllSlots, $bookedSlots));
+        $slotsData = [];
+        foreach ($formattedAllSlots as $slot) {
+            $slotsData[] = [
+                'time' => $slot,
+                'is_booked' => in_array($slot, $bookedSlots)
+            ];
+        }
 
-        return response()->json($availableSlots);
+        return response()->json($slotsData);
     }
 
     public function postCreate(Request $request)

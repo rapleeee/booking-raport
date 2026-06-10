@@ -1,11 +1,21 @@
+<!-- Overlay backdrop for mobile -->
+<div 
+    x-show="open && isMobile" 
+    @click="open = false"
+    x-transition.opacity
+    class="fixed inset-0 z-40 bg-gray-900/50 backdrop-blur-sm lg:hidden"
+></div>
+
 <aside
-    x-data="{ open: window.innerWidth >= 1024 }"
-    :class="open ? 'w-64' : 'w-16'"
-    class="relative flex flex-col h-screen bg-gray-900 text-white transition-all duration-300 ease-in-out shrink-0"
+    :class="[
+        isMobile ? (open ? 'translate-x-0 w-64' : '-translate-x-full w-64') : (open ? 'w-64' : 'w-16')
+    ]"
+    class="fixed inset-y-0 left-0 z-50 flex flex-col h-screen bg-gray-900 text-white transition-all duration-300 ease-in-out lg:relative lg:shrink-0"
 >
+    <!-- Toggle Button (Desktop Only) -->
     <button
         @click="open = !open"
-        class="absolute -right-3 top-6 z-10 flex items-center justify-center w-6 h-6 rounded-full bg-gray-900 border border-gray-700 text-gray-400 hover:text-white transition"
+        class="hidden lg:flex absolute -right-3 top-6 z-10 items-center justify-center w-6 h-6 rounded-full bg-gray-900 border border-gray-700 text-gray-400 hover:text-white transition"
     >
         <svg x-show="open" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>

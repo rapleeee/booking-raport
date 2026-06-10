@@ -29,6 +29,25 @@ class KelasController extends Controller
         return back()->with('success', 'Kelas berhasil ditambahkan.');
     }
 
+    public function edit(Kelas $kela)
+    {
+        $walis = WaliKelas::orderBy('nama')->get();
+        return view('admin.kelas.edit', compact('kela', 'walis'));
+    }
+
+    public function update(Request $request, Kelas $kela)
+    {
+        $request->validate([
+            'nama' => 'required|unique:kelas,nama,' . $kela->id,
+            'kode_kelas' => 'required|unique:kelas,kode_kelas,' . $kela->id,
+            'ruangan' => 'nullable|string|max:255',
+            'wali_kelas_id' => 'required|exists:wali_kelas,id'
+        ]);
+
+        $kela->update($request->all());
+        return redirect()->route('admin.kelas.index')->with('success', 'Kelas berhasil diperbarui.');
+    }
+
     public function destroy(Kelas $kela)
     {
         $kela->delete();

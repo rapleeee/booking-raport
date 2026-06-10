@@ -49,6 +49,15 @@ class waliController extends Controller
 
     public function panggil(Booking $booking)
     {
+        // Cek apakah ada tamu lain yang sedang dilayani di kelas yang sama
+        $isCallingOther = Booking::where('kelas_id', $booking->kelas_id)
+            ->where('status', 'dipanggil')
+            ->exists();
+            
+        if ($isCallingOther) {
+            return back()->with('error', 'Selesaikan dulu tamu yang sedang dilayani saat ini!');
+        }
+
         $booking->update(['status' => 'dipanggil']);
         return back()->with('success', 'Berhasil dipanggil! Silakan tunggu tamu masuk ke ruangan.');
     }

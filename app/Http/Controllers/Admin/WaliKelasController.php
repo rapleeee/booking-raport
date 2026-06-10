@@ -25,6 +25,22 @@ class WaliKelasController extends Controller
         return back()->with('success', 'Wali Kelas berhasil ditambahkan.');
     }
 
+    public function edit(WaliKelas $walikela)
+    {
+        return view('admin.walikelas.edit', compact('walikela'));
+    }
+
+    public function update(Request $request, WaliKelas $walikela)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'pin' => 'required|unique:wali_kelas,pin,' . $walikela->id
+        ]);
+
+        $walikela->update($request->all());
+        return redirect()->route('admin.walikelas.index')->with('success', 'Wali Kelas berhasil diperbarui.');
+    }
+
     public function destroy(WaliKelas $walikela)
     {
         $walikela->delete();

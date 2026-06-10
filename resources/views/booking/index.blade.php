@@ -227,26 +227,41 @@
                 .then(slots => {
                     container.innerHTML = '';
                     if(slots.length === 0) {
-                        container.innerHTML = '<p class="text-sm text-red-500 col-span-3 text-center py-2">Tidak ada slot tersedia</p>';
+                        container.innerHTML = '<p class="text-sm text-red-500 col-span-3 text-center py-2">Tidak ada jadwal tersedia</p>';
                         document.getElementById('input_jam').value = '';
                         return;
                     }
 
                     let firstSlot = true;
-                    slots.forEach(slot => {
-                        const time = slot.substring(0, 5); // 08:00
+                    slots.forEach(slotData => {
+                        const time = slotData.time.substring(0, 5); // 08:00
+                        const isBooked = slotData.is_booked;
+                        
                         const div = document.createElement('div');
-                        div.className = `time-chip text-center py-3 rounded-2xl border border-gray-200 shadow-sm text-sm font-semibold cursor-pointer ${firstSlot ? 'active' : 'bg-white text-gray-700'}`;
-                        div.dataset.jam = time;
-                        div.onclick = function() { selectTime(this) };
-                        div.innerText = time;
-                        container.appendChild(div);
-
-                        if(firstSlot) {
-                            document.getElementById('input_jam').value = time;
-                            firstSlot = false;
+                        
+                        if (isBooked) {
+                            div.className = `text-center py-3 rounded-2xl border border-gray-200 shadow-sm text-sm font-semibold bg-gray-100 text-gray-400 opacity-60 cursor-not-allowed`;
+                            div.innerText = time;
+                            // Do not add onclick or data-jam
+                        } else {
+                            div.className = `time-chip text-center py-3 rounded-2xl border border-gray-200 shadow-sm text-sm font-semibold cursor-pointer ${firstSlot ? 'active' : 'bg-white text-gray-700'}`;
+                            div.dataset.jam = time;
+                            div.onclick = function() { selectTime(this) };
+                            div.innerText = time;
+                            
+                            if(firstSlot) {
+                                document.getElementById('input_jam').value = time;
+                                firstSlot = false;
+                            }
                         }
+                        
+                        container.appendChild(div);
                     });
+                    
+                    if (firstSlot) {
+                        // Means all slots were booked
+                        document.getElementById('input_jam').value = '';
+                    }
                 });
         }
 
