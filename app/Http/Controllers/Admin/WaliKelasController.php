@@ -11,7 +11,7 @@ class WaliKelasController extends Controller
     public function index()
     {
         $walis = WaliKelas::orderBy('nama')->get();
-        return view('admin.walikelas.index', compact('walis'));
+        return view('admin.waliKelas.index', compact('walis'));
     }
 
     public function store(Request $request)
