@@ -125,6 +125,60 @@
             @endforelse
         </div>
 
+        <div class="mt-12 mb-6 border-t border-gray-200 pt-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-2">Seluruh Data Pendaftar</h2>
+            <p class="text-sm text-gray-500 mb-6">Daftar ini berisi seluruh orang tua/siswa yang sudah melakukan <strong>booking</strong>, terlepas dari apakah mereka sudah hadir atau belum. Gunakan daftar ini untuk mengingatkan mereka yang belum membooking.</p>
+
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-50 text-xs text-gray-400 uppercase tracking-wide">
+                                <th class="text-left px-6 py-4 font-semibold">No</th>
+                                <th class="text-left px-6 py-4 font-semibold">Nama Siswa</th>
+                                <th class="text-left px-6 py-4 font-semibold">Orang Tua</th>
+                                <th class="text-left px-6 py-4 font-semibold">Jadwal</th>
+                                <th class="text-left px-6 py-4 font-semibold">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            @forelse($allBookings as $index => $b)
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 text-gray-500">{{ $index + 1 }}</td>
+                                <td class="px-6 py-4 font-medium text-gray-800">
+                                    {{ $b->siswa->nama }}
+                                    <div class="text-xs text-indigo-500 mt-1">{{ $b->kelas->nama }}</div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-600">{{ $b->nama_orangtua }}</td>
+                                <td class="px-6 py-4">
+                                    <div class="text-gray-800 font-medium">{{ \Carbon\Carbon::parse($b->tanggal_booking)->translatedFormat('d M Y') }}</div>
+                                    <div class="text-xs text-gray-500 mt-1">{{ date('H:i', strtotime($b->jam_booking)) }}</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    @if($b->status === 'booking')
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">Menunggu Kehadiran</span>
+                                    @elseif($b->status === 'hadir')
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">Hadir (Antre)</span>
+                                    @elseif($b->status === 'dipanggil')
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100">Sedang Dipanggil</span>
+                                    @elseif($b->status === 'selesai')
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">Selesai</span>
+                                    @else
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-50 text-gray-700 border border-gray-100">{{ ucfirst($b->status) }}</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-8 text-center text-gray-400">Belum ada orang tua yang mendaftar.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             @if(session('success'))

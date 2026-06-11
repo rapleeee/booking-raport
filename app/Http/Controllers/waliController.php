@@ -44,7 +44,13 @@ class waliController extends Controller
             ->orderBy('jam_booking', 'asc')
             ->get();
 
-        return view('wali.dashboard', compact('wali', 'bookings'));
+        $allBookings = Booking::with('siswa', 'kelas')
+            ->whereIn('kelas_id', $kelasIds)
+            ->orderBy('tanggal_booking', 'asc')
+            ->orderBy('jam_booking', 'asc')
+            ->get();
+
+        return view('wali.dashboard', compact('wali', 'bookings', 'allBookings'));
     }
 
     public function panggil(Booking $booking)
